@@ -2,12 +2,13 @@
 
 Portable [niri](https://github.com/YaLTeR/niri) + [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) setup for Fedora.
 
-One-shot install on a fresh Fedora machine (e.g. t2linux):
+Install on a fresh Fedora machine (e.g. t2linux):
 
 ```bash
 git clone <this-repo> ~/dotfiles-niri-dms
 cd ~/dotfiles-niri-dms
-./bootstrap.sh
+./bootstrap.sh                   # packages, configs, DMS overlay
+./scripts/apply-wallpapers.sh    # bundled wallpapers + DMS session state
 ```
 
 After it finishes, log out and pick "niri" at the display manager. On first
@@ -17,7 +18,7 @@ regenerates `~/.config/niri/dms/outputs.kdl` for your hardware.
 ## What's in here
 
 ```
-bootstrap.sh                  one-shot installer
+bootstrap.sh                  one-shot system installer (packages + dotfiles)
 packages/repos.sh             enable yalter/niri, avengemedia/danklinux+dms COPRs
 packages/core.txt             niri / quickshell / dms / fcitx5 / etc.
 home/                         dotfile tree, rsynced into $HOME
@@ -25,15 +26,30 @@ home/                         dotfile tree, rsynced into $HOME
   .config/DankMaterialShell/  settings.json, firefox.css, themes/rosePine/
   .config/alacritty/          alacritty.toml + themes/rose-pine-moon.toml
   .config/systemd/user/dms.service.d/override.conf   sets DMS_LOCAL_PATH
-  .local/share/wallpapers/rose-pine/                 ~15 wallpapers, ~27M
-  .local/state/DankMaterialShell/                    pre-seeded session.json
-                                                     + cache.json so the
-                                                     bundled wallpapers are
-                                                     active on first launch
 overlay/quickshell-dms/       local QML overrides applied on top of the
                               cp -as mirror of /usr/share/quickshell/dms/
+wallpapers/rose-pine/         ~15 rose-pine wallpapers, ~27M
+                              (NOT installed by bootstrap — see below)
+dms-state/                    session.json + cache.json templates that
+                              point DMS at the bundled wallpapers
+                              (NOT installed by bootstrap — see below)
+scripts/apply-wallpapers.sh   sync wallpapers/ → ~/.local/share/wallpapers/
+                              and seed dms-state/ → ~/.local/state/DMS/
 scripts/refresh-dms-overlay.sh   run after every `dnf upgrade dms`
 ```
+
+## Two-stage install
+
+`bootstrap.sh` and `apply-wallpapers.sh` are deliberately split:
+
+| Step | Script | Idempotent? | What it touches |
+|---|---|---|---|
+| 1. system + configs | `./bootstrap.sh` | yes | dnf packages, $HOME dotfiles, DMS overlay |
+| 2. wallpapers + DMS state | `./scripts/apply-wallpapers.sh` | yes | `~/.local/share/wallpapers/`, `~/.local/state/DankMaterialShell/` |
+
+Run `bootstrap.sh` once on a new machine. Re-run `apply-wallpapers.sh`
+any time you want to re-deploy the bundled wallpaper set or reset DMS
+session state.
 
 ## What's *not* in here (intentional)
 
