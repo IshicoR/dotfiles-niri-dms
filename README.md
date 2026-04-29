@@ -76,10 +76,12 @@ and clear `niriOutputSettings`, `screenPreferences.{toast,notepad,osd}`,
 
 ## Key bindings (niri+DMS)
 
+### Launchers / panels (DMS popouts)
+
 | Key | Action |
 |---|---|
-| `Mod+Space` | fcitx5 IME toggle |
-| `Mod+A` | DMS spotlight launcher |
+| `Mod+A` | DMS spotlight (app launcher) |
+| `Mod+Shift+A` | spotlight → calculator mode |
 | `Mod+V` | DMS clipboard manager |
 | `Mod+L` | DMS lock screen |
 | `Mod+X` | DMS power menu |
@@ -89,7 +91,50 @@ and clear `niriOutputSettings`, `screenPreferences.{toast,notepad,osd}`,
 | `Mod+Y` / `Mod+Shift+W` | DMS wallpaper browser |
 | `Mod+Alt+←/→` | DMS prev/next wallpaper |
 | `Mod+Shift+T` | DMS theme light/dark toggle |
-| `Mod+T` / `Mod+E` / `Mod+C` / `Mod+F` | alacritty / nautilus / zed / firefox |
+| `Mod+Shift+Y` | DMS night mode toggle |
+| `Mod+B` | toggle DMS dock visibility |
+| `Mod+Shift+B` | toggle DMS bar visibility |
+| `Ctrl+Shift+Esc` | DMS process list |
+
+### Apps
+
+| Key | Action |
+|---|---|
+| `Mod+T` | alacritty |
+| `Mod+E` | nautilus |
+| `Mod+C` | zed |
+| `Mod+F` | firefox |
+
+### Window switching
+
+| Key | Action |
+|---|---|
+| `Alt+Tab` / `Alt+Shift+Tab` | DMS recent-windows switcher (UI overlay) |
+| `Mod+Tab` / `Mod+Shift+Tab` | same, via Mod |
+| `Alt+grave` / `Mod+grave` (`+Shift`) | recent-windows filtered to current app-id |
+| `Mod+Shift+Slash` / `Mod+K` | hotkey cheatsheet (niri's built-in overlay) |
+
+### Niri layout
+
+| Key | Action |
+|---|---|
+| `Mod+Q` | close window |
+| `Mod+Shift+E` | quit niri |
+| `Mod+W` | toggle floating |
+| `Alt+Return` | fullscreen |
 | `Mod+O` / `Mod+D` | toggle overview |
+| `Mod+R` / `Mod+Shift+R` | preset column width / window height |
+| `Mod+1`..`0` / `Mod+Shift+1`..`0` | focus / move to workspace |
+| `Mod+Shift+←↑↓→` | focus monitor |
+| `Mod+Alt+Shift+←↑↓→` | move column to monitor |
+
+### IME / system
+
+| Key | Action |
+|---|---|
+| `Mod+Space` | fcitx5 IME toggle |
+| `Mod+P` / `Print` / `Ctrl+Print` | screenshot UI / screen / window |
+| `Mod+Shift+P` | DPMS off |
 | `Ctrl+Alt+W` | restart dms.service |
-| `Mod+Shift+Slash` | hotkey overlay |
+| `XF86Audio*` | wpctl mute / volume + playerctl |
+| `XF86MonBrightness*` | brightnessctl ±5% |
