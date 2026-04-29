@@ -49,12 +49,15 @@ done < <(cd "$REPO_DIR/home" && find . -type f -print0)
 log "syncing dotfiles into \$HOME"
 rsync -a "$REPO_DIR/home/" "$HOME/"
 
-# Expand __HOME__ placeholder inside DMS settings.json (DMS doesn't expand ~).
-SETTINGS="$HOME/.config/DankMaterialShell/settings.json"
-if [ -f "$SETTINGS" ] && grep -q "__HOME__" "$SETTINGS"; then
-    sed -i "s|__HOME__|$HOME|g" "$SETTINGS"
-    log "expanded __HOME__ in settings.json"
-fi
+# Expand __HOME__ placeholder in any DMS config/state file (DMS doesn't expand ~).
+for f in "$HOME/.config/DankMaterialShell/settings.json" \
+         "$HOME/.local/state/DankMaterialShell/session.json" \
+         "$HOME/.local/state/DankMaterialShell/cache.json"; do
+    if [ -f "$f" ] && grep -q "__HOME__" "$f"; then
+        sed -i "s|__HOME__|$HOME|g" "$f"
+        log "expanded __HOME__ in $(basename "$f")"
+    fi
+done
 
 # --- 4. quickshell/dms overlay mirror -------------------------------------
 SYS_DMS=/usr/share/quickshell/dms

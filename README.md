@@ -26,6 +26,10 @@ home/                         dotfile tree, rsynced into $HOME
   .config/alacritty/          alacritty.toml + themes/rose-pine-moon.toml
   .config/systemd/user/dms.service.d/override.conf   sets DMS_LOCAL_PATH
   .local/share/wallpapers/rose-pine/                 ~15 wallpapers, ~27M
+  .local/state/DankMaterialShell/                    pre-seeded session.json
+                                                     + cache.json so the
+                                                     bundled wallpapers are
+                                                     active on first launch
 overlay/quickshell-dms/       local QML overrides applied on top of the
                               cp -as mirror of /usr/share/quickshell/dms/
 scripts/refresh-dms-overlay.sh   run after every `dnf upgrade dms`
