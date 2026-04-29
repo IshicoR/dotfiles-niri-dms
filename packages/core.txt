@@ -1,0 +1,61 @@
+# Core packages for niri + DankMaterialShell
+# One package per line, # for comments. Used by bootstrap.sh via xargs.
+
+# --- Compositor + shell ---
+niri
+quickshell
+dms
+danksearch
+matugen
+cava
+dgop
+
+# --- Terminal + IME + clipboard ---
+alacritty
+fcitx5
+fcitx5-mozc
+fcitx5-configtool
+fcitx5-qt
+fcitx5-gtk
+wl-clipboard
+cliphist
+
+# --- DE essentials (auth agent, tray apps, file manager) ---
+polkit-gnome
+blueman
+udiskie
+nautilus
+
+# --- Audio / brightness / media ---
+wireplumber
+pipewire-pulseaudio
+pavucontrol
+brightnessctl
+playerctl
+
+# --- Screen capture (niri's `screenshot` action shells out to these) ---
+grim
+slurp
+
+# --- Theming / look ---
+qt6ct
+nwg-look
+papirus-icon-theme
+
+# --- Fonts (DMS settings.json references these) ---
+google-roboto-mono-fonts
+jetbrains-mono-fonts-all
+
+# --- XDG portal stack (file pickers, screensharing) ---
+xdg-desktop-portal
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+
+# --- Misc utilities used by niri/dms or referenced by bindings ---
+libnotify
+networkmanager
+NetworkManager-tui
+inotify-tools
+jq
+rsync
+git

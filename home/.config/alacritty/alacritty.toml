@@ -1,0 +1,25 @@
+[general]
+import = ["~/.config/alacritty/themes/rose-pine-moon.toml"]
+
+[window]
+dimensions = { columns = 120, lines = 30 }
+decorations = "None"
+startup_mode = "Windowed"
+padding = { x = 10, y = 10 }
+opacity = 0.9
+blur = false
+
+[font]
+normal = { family = "ZedMono Nerd Font Mono", style = "Regular" }
+size = 14.0
+
+[cursor]
+style = { blinking = "On" }
+blink_interval = 500
+
+[terminal]
+shell = { program = "/bin/zsh" }
+osc52 = "CopyPaste"
+
+[colors]
+transparent_background_colors = true

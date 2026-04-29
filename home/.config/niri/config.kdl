@@ -1,0 +1,420 @@
+// niri config (portable, niri + DankMaterialShell)
+// https://yalter.github.io/niri/Configuration:-Introduction
+//
+// HyDE-specific bindings (rofi launcher, swww wallpaper scripts, gamemode,
+// keybind hints, rofi style select) and the hyde-apply-gsettings spawn were
+// removed from this portable version. NVIDIA-only env vars (LIBVA_DRIVER_NAME,
+// __GLX_VENDOR_LIBRARY_NAME) were also dropped — re-add them locally if the
+// host has an NVIDIA GPU. Monitor-specific outputs are managed by DMS via
+// `include "dms/outputs.kdl"` (DMS regenerates that file on first run).
+
+// ── Input ────────────────────────────────────────────────────────────
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        accel-profile "flat"
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+// ── Outputs (monitors) ──────────────────────────────────────────────
+// Monitor configuration is managed by DMS — see the
+// `include "dms/outputs.kdl"` line near the bottom of this file.
+
+// ── Layout ──────────────────────────────────────────────────────────
+layout {
+    gaps 11
+    background-color "transparent"
+
+    center-focused-column "on-overflow"
+    always-center-single-column true
+
+    preset-column-widths {
+        proportion 0.5
+        proportion 0.8
+    }
+
+    default-column-width { proportion 0.8; }
+
+    focus-ring {
+        width 2
+        active-gradient from="#90ceaa" to="#ecd3a0" angle=45
+        inactive-color "#3c3836"
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+        on
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+
+    struts {}
+}
+
+// ── Overview ────────────────────────────────────────────────────────
+overview {
+    zoom 0.5
+    backdrop-color "#282828"
+    workspace-shadow {
+        on
+        offset x=0 y=10
+        softness 40
+        spread 10
+        color "#1d202180"
+    }
+}
+
+// ── Animations ──────────────────────────────────────────────────────
+animations {
+    workspace-switch {
+        spring damping-ratio=0.8 stiffness=600 epsilon=0.001
+    }
+
+    window-open {
+        duration-ms 200
+        curve "ease-out-expo"
+    }
+
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=0.85 stiffness=500 epsilon=0.001
+    }
+
+    window-movement {
+        spring damping-ratio=0.85 stiffness=500 epsilon=0.001
+    }
+
+    window-resize {
+        spring damping-ratio=0.85 stiffness=500 epsilon=0.001
+    }
+}
+
+// ── Environment ─────────────────────────────────────────────────────
+environment {
+    QT_QPA_PLATFORM "wayland;xcb"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+    MOZ_ENABLE_WAYLAND "1"
+    GDK_SCALE "1"
+    XDG_CURRENT_DESKTOP "niri"
+    ZED_WINDOW_DECORATIONS "server"
+}
+
+// ── Cursor ──────────────────────────────────────────────────────────
+cursor {
+    xcursor-theme "default"
+    xcursor-size 20
+}
+
+// ── Startup ─────────────────────────────────────────────────────────
+spawn-at-startup "/usr/libexec/polkit-gnome-authentication-agent-1"
+spawn-at-startup "blueman-applet"
+spawn-at-startup "udiskie" "--no-automount" "--smart-tray"
+spawn-at-startup "fcitx5"
+spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
+spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
+// Wallpaper is managed by DMS (dms ipc call wallpaper ...)
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+// ── Window Rules ────────────────────────────────────────────────────
+window-rule {
+    geometry-corner-radius 3
+    clip-to-geometry true
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// ── Float rules ─────────────────────────────────────────────────────
+window-rule {
+    match app-id="^Alacritty$"
+    draw-border-with-background false
+}
+
+window-rule {
+    match app-id=r#"^fcitx"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Library$"
+    open-floating true
+}
+
+window-rule {
+    match app-id="vlc"
+    open-floating true
+}
+
+window-rule {
+    match app-id="kvantummanager"
+    match app-id="qt5ct"
+    match app-id="qt6ct"
+    match app-id="nwg-look"
+    match app-id="org.kde.ark"
+    match app-id="org.pulseaudio.pavucontrol"
+    match app-id="blueman-manager"
+    match app-id=r#"^nm-"#
+    match app-id=r#"polkit"#
+    open-floating true
+}
+
+window-rule {
+    match app-id="Signal"
+    match app-id="com.github.rafostar.Clapper"
+    match app-id="app.drey.Warp"
+    match app-id="net.davidotek.pupgui2"
+    match app-id="yad"
+    match app-id="eog"
+    match app-id="io.github.alainm23.planify"
+    match app-id="io.gitlab.theevilskeleton.Upscaler"
+    match app-id="com.github.unrud.VideoDownloader"
+    match app-id="io.gitlab.adhami3310.Impression"
+    match app-id="io.missioncenter.MissionCenter"
+    open-floating true
+}
+
+window-rule {
+    match title=r#"^Open File"#
+    match title=r#"^Save As"#
+    match title=r#"^Open Folder"#
+    match title=r#"^Select"#
+    open-floating true
+}
+
+// ── Layer Rules ─────────────────────────────────────────────────────
+window-rule {
+    match app-id=r#"^org\.keepassxc"#
+    match app-id="org.pulseaudio.pavucontrol"
+    match app-id="blueman-manager"
+    match app-id=r#"^nm-"#
+    block-out-from "screencast"
+}
+
+// DMS-managed blur layer rules (auto-generated by DMS at startup).
+include "dms/wpblur.kdl"
+
+layer-rule {
+    match namespace="^notifications$"
+    block-out-from "screencast"
+    background-effect {
+        blur true
+    }
+}
+
+// DMS bar: niri-side blur enabled so that BackgroundEffect.blurRegion (set by
+// DMS QML on its own surface) can take effect.
+layer-rule {
+    match namespace="^dms:bar$"
+    background-effect {
+        blur true
+    }
+}
+
+// DMS popouts: blur intentionally not applied — caused screen flicker on NVIDIA.
+
+// ── Key Bindings ────────────────────────────────────────────────────
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // ── Input Method ────────────────────────────────────────────────
+    Mod+Space hotkey-overlay-title="Toggle Input Method" { spawn "fcitx5-remote" "-t"; }
+
+    // ── Window / Session ────────────────────────────────────────────
+    Mod+Q { close-window; }
+    Mod+Shift+E { quit; }
+    Mod+W { toggle-window-floating; }
+    Mod+Shift+Space { switch-focus-between-floating-and-tiling; }
+    Alt+Return { fullscreen-window; }
+    Mod+L hotkey-overlay-title="Lock Screen" { spawn "dms" "ipc" "call" "lock" "lock"; }
+    Ctrl+Alt+W hotkey-overlay-title="Restart DMS" { spawn-sh "systemctl --user restart dms.service"; }
+
+    // ── Application shortcuts ───────────────────────────────────────
+    Mod+T hotkey-overlay-title="Terminal" { spawn "alacritty"; }
+    Mod+E hotkey-overlay-title="File Manager" { spawn "nautilus"; }
+    Mod+C hotkey-overlay-title="Editor" { spawn "zed"; }
+    Mod+F hotkey-overlay-title="Browser" { spawn "firefox"; }
+    Ctrl+Shift+Escape hotkey-overlay-title="Task Manager" { spawn "dms" "ipc" "call" "processlist" "focusOrToggle"; }
+
+    // ── DMS launchers / panels ──────────────────────────────────────
+    Mod+A hotkey-overlay-title="App Launcher" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
+    Mod+N hotkey-overlay-title="Notification Center" { spawn "dms" "ipc" "call" "notifications" "toggle"; }
+    Mod+Shift+N hotkey-overlay-title="Notepad" { spawn "dms" "ipc" "call" "notepad" "toggle"; }
+    Mod+Y hotkey-overlay-title="Browse Wallpapers" { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }
+    Mod+Shift+S hotkey-overlay-title="DMS Settings" { spawn "dms" "ipc" "call" "settings" "focusOrToggle"; }
+
+    // ── Clipboard ───────────────────────────────────────────────────
+    Mod+V hotkey-overlay-title="Clipboard Manager" { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
+
+    // ── Audio (portable: wireplumber + playerctl) ───────────────────
+    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+
+    // ── Media ───────────────────────────────────────────────────────
+    XF86AudioPlay  allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioNext  allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86AudioPrev  allow-when-locked=true { spawn "playerctl" "previous"; }
+
+    // ── Brightness (portable: brightnessctl) ────────────────────────
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "set" "5%+"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
+
+    // ── Screenshot ──────────────────────────────────────────────────
+    Mod+P { screenshot; }
+    Print { screenshot-screen; }
+    Mod+Alt+P { screenshot-screen; }
+    Ctrl+Print { screenshot-window; }
+
+    // ── Overview ────────────────────────────────────────────────────
+    Mod+O repeat=false { toggle-overview; }
+    Mod+D repeat=false { toggle-overview; }
+
+    // ── Focus navigation ────────────────────────────────────────────
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-up; }
+    Mod+Down { focus-window-down; }
+    Alt+Tab { focus-window-down; }
+
+    // ── Move columns / windows ──────────────────────────────────────
+    Mod+Ctrl+Left { move-column-left; }
+    Mod+Ctrl+Right { move-column-right; }
+    Mod+Ctrl+Up { move-window-up; }
+    Mod+Ctrl+Down { move-window-down; }
+
+    // ── Resize ──────────────────────────────────────────────────────
+    Mod+Ctrl+Shift+Right { set-column-width "+5%"; }
+    Mod+Ctrl+Shift+Left { set-column-width "-5%"; }
+    Mod+Ctrl+Shift+Up { set-window-height "-5%"; }
+    Mod+Ctrl+Shift+Down { set-window-height "+5%"; }
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-window-height; }
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // ── Column operations ───────────────────────────────────────────
+    Mod+BracketLeft { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+    Mod+Comma { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+
+    // ── Maximize / center ───────────────────────────────────────────
+    Mod+Shift+F { maximize-column; }
+    Mod+Ctrl+F { expand-column-to-available-width; }
+    Mod+Shift+C { center-column; }
+
+    // ── Workspaces ──────────────────────────────────────────────────
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+
+    // ── Move to workspace ───────────────────────────────────────────
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+
+    // ── Relative workspace navigation ───────────────────────────────
+    Mod+Alt+Down { focus-workspace-down; }
+    Mod+Alt+Up { focus-workspace-up; }
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up { focus-workspace-up; }
+
+    // ── Move column to adjacent workspace ───────────────────────────
+    Mod+Ctrl+Alt+Down { move-column-to-workspace-down; }
+    Mod+Ctrl+Alt+Up { move-column-to-workspace-up; }
+    Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
+    Mod+Ctrl+Page_Up { move-column-to-workspace-up; }
+
+    // ── Workspace scroll (mouse) ────────────────────────────────────
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft { focus-column-left; }
+
+    // ── Monitor focus ───────────────────────────────────────────────
+    Mod+Shift+Left { focus-monitor-left; }
+    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+Up { focus-monitor-up; }
+    Mod+Shift+Down { focus-monitor-down; }
+
+    // ── Move column to monitor ──────────────────────────────────────
+    Mod+Alt+Shift+Left { move-column-to-monitor-left; }
+    Mod+Alt+Shift+Right { move-column-to-monitor-right; }
+    Mod+Alt+Shift+Up { move-column-to-monitor-up; }
+    Mod+Alt+Shift+Down { move-column-to-monitor-down; }
+
+    // ── Tabbed display ──────────────────────────────────────────────
+    Mod+G { toggle-column-tabbed-display; }
+
+    // ── Power ───────────────────────────────────────────────────────
+    Mod+Shift+P { power-off-monitors; }
+    Mod+X hotkey-overlay-title="Power Menu" { spawn "dms" "ipc" "call" "powermenu" "toggle"; }
+
+    // ── Keyboard shortcut inhibit ───────────────────────────────────
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    // ── Wallpaper (DMS) ─────────────────────────────────────────────
+    Mod+Alt+Right hotkey-overlay-title="Next Wallpaper" { spawn "dms" "ipc" "call" "wallpaper" "next"; }
+    Mod+Alt+Left  hotkey-overlay-title="Prev Wallpaper" { spawn "dms" "ipc" "call" "wallpaper" "prev"; }
+    Mod+Shift+W   hotkey-overlay-title="Wallpaper Browser" { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }
+
+    // ── Theme (DMS light/dark toggle) ───────────────────────────────
+    Mod+Shift+T hotkey-overlay-title="Toggle Theme Mode" { spawn "dms" "ipc" "call" "theme" "toggle"; }
+}
+
+include "dms/windowrules.kdl"
+
+include "dms/outputs.kdl"
